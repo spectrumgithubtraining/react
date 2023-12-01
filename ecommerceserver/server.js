@@ -9,6 +9,8 @@ const bodyParser = require('body-parser');
 const userRegistrationRoutes = require('./routes/userRegistrationRoutes');
 const userLoginRoutes = require('./routes/userLoginRoutes');
 const userLogoutRoutes = require('./routes/userRegistrationRoutes');
+const productsRoutes = require('./routes/productsRoutes')
+const userDetails = require('./routes/UserDetails')
 
 const app = express();
 app.use(bodyParser.json());
@@ -45,6 +47,10 @@ const verifyToken = (req, res, next) => {
 app.use('/api/user/register', userRegistrationRoutes);
 app.use('/api/user/login', userLoginRoutes);
 app.use('/api/user/logout', userLogoutRoutes);
+app.use('/api/admin/Product',productsRoutes)
+// app.use('/api/user/details',userDetails)
+
+
 
 
 

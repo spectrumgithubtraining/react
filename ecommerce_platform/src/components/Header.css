@@ -1,0 +1,16 @@
+nav.navbar.navbar-expand {
+    background-color: rgb(255, 255, 255);
+}
+a.navbar-brand {
+    font-size: 42px;
+    margin-left: 20px;
+    color: black;
+
+}
+a.nav-link{
+    color: black;
+}
+button.btn.btn-outline-dark {
+    
+    margin-left: 400px;
+}

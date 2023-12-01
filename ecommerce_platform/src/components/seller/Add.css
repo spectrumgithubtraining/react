@@ -1,0 +1,40 @@
+/* Container for the form */
+
+   
+
+.form-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background-color: beige;
+  }
+  
+  /* Style for form groups */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  /* Style for input fields */
+  .form-control {
+    width: 100%;
+  }
+  
+  /* Style for buttons */
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  /* Style for the cancel button */
+  .cancel-button {
+    background-color: #6c757d;
+    color: #fff;
+  }
+  
+  /* Style for the add button */
+  .add-button {
+    background-color: #17a2b8;
+    color: #fff;
+  }
+  
