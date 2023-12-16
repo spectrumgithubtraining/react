@@ -28,22 +28,6 @@ mongoose.connect('mongodb://0.0.0.0:27017/ecommrceplatform', { useNewUrlParser: 
 
 const secretKey = 'your-secret-key';
 
-const verifyToken = (req, res, next) => {
-  const token = req.cookies.token;
-  if (!token) {
-    return res.status(401).json({ message: 'Unauthorized' });
-  }
-
-  jwt.verify(token, secretKey, (err, user) => {
-    if (err) {
-      return res.status(401).json({ message: 'Token invalid' });
-    }
-
-    req.user = user;
-    next();
-  });
-};
-
 app.use('/api/user/register', userRegistrationRoutes);
 app.use('/api/user/login', userLoginRoutes);
 app.use('/api/user/logout', userLogoutRoutes);

@@ -1,8 +1,33 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-import './Header.css'
+function Header({ onSearch }) {
+  const [allProducts, setAllProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
-function Header() {
+  const fetchData = async () => {
+    try {
+      const result = await axios.get('http://localhost:5000/api/admin/Product/viewProduct');
+      setAllProducts(result.data.product);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleSearch = () => {
+    const filteredProducts = allProducts.filter(
+      (product) =>
+        product.productName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    onSearch(filteredProducts);
+  };
+
+
+
   return (
     <div>
     <nav className="navbar navbar-expand" data-bs-theme="light">
@@ -36,8 +61,8 @@ function Header() {
             </li>
           </ul>
           <form className="d-flex">
-            <input className="form-control me-sm-2" type="search" placeholder="Search" />
-            <button className="btn btn-secondary my-2 my-sm-0 me-5" type="submit">Search</button>
+          <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+      <button type='button'  class="btn btn-secondary" onClick={handleSearch}>Search</button>
           </form>
         </div>
       </div>

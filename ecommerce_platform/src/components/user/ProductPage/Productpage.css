@@ -1,0 +1,24 @@
+.product-page {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .product-container,
+  .recommendation-sidebar,
+  .image-carousel {
+    width: 30%;
+    margin: 0 10px;
+  }
+  
+  .carousel-container {
+    display: flex;
+    overflow: hidden;
+  }
+  
+  .image-carousel img {
+    width: 100%;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  /* Add more styling as needed */
+  

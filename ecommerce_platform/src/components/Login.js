@@ -26,59 +26,68 @@ function Login() {
     return validateEmail() && validatePassword();
   };
 
-  const handleLogin = async () => {
-    if (!validateFields()) {
-      alert('Invalid input. Please check your details.');
-      return;
-    } else {
-      try {
-        const response = await axios.post('http://localhost:5000/api/user/login/login', { email, password });
-        console.log(response)
+  
+const handleLogin = async () => {
+  try {
+    const BuyProductId = sessionStorage.getItem('BuyProductId');
 
-        if (response.data) {
-          const token = response.data.token
-          sessionStorage.setItem('token',token)
+    // Continue with your existing login logic
+    const response = await axios.post('http://localhost:5000/api/user/login/login', { email, password });
 
-          const { userType, redirect } = response.data;
+    if (response.data) {
+      const token = response.data.token;
+      console.log("token:", token);
+      
+      // Store the token in sessionStorage
+      sessionStorage.setItem('token', token);
 
-          if (userType === 'user' || userType === 'seller') {
-            navigate(redirect);
-          } else {
-            alert('Invalid user type');
-          }
+      // Redirect to the respective page with parameters
+      if (BuyProductId) {
+        // Clear the BuyProductId from sessionStorage after using it
+       
+        
+        // Redirect to the product page with the BuyProductId
+        navigate(`/user/view/${BuyProductId}`);
+      } else {
+        const { userType, redirect } = response.data;
+        if (userType === 'user' || userType === 'seller') {
+          navigate(redirect);
         } else {
-          alert('Invalid response format');
+          alert('Invalid user type');
         }
-      } catch (error) {
-        console.error('Error:', error);
-        alert('Error during login');
       }
+    } else {
+      alert('Invalid response format');
     }
-  };
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Error during login');
+  }
+};
 
   const responseGoogle = async (response) => {
     try {
-    
-      console.log(response)
+
+      // console.log(response)
       const { credential } = response;
-      console.log(credential);
+      // console.log(credential);
       const payload = JSON.parse(atob(credential.split('.')[1]));
-      
+
 
       const email = payload.email;
       const firstName = payload.given_name; // Update this line
       const lastName = payload.family_name; // Update this line
-      const googleId=payload.sub
+      const googleId = payload.sub
       const tokenId = credential;
 
-      console.log('Email:', email);
-      console.log('First Name:', firstName);
-      console.log('Last Name:', lastName);
-      console.log('token:',tokenId);
-      console.log(payload)
-    console.log(googleId)
+      //   console.log('Email:', email);
+      //   console.log('First Name:', firstName);
+      //   console.log('Last Name:', lastName);
+      //   console.log('token:',tokenId);
+      //   console.log(payload)
+      // console.log(googleId)
 
-      const googleResponse = await axios.post('http://localhost:5000/api/user/login/google',{
+      const googleResponse = await axios.post('http://localhost:5000/api/user/login/google', {
         email,
         firstName,
         lastName,
@@ -88,24 +97,24 @@ function Login() {
 
       })
       if (googleResponse.data) {
-          const { userType, redirect } = googleResponse.data;
-  
-          if (userType === 'user') {
+        const { userType, redirect } = googleResponse.data;
 
-          
-            navigate(redirect);
-          } else {
-            alert('Invalid user type');
-          }
+        if (userType === 'user') {
+
+
+          navigate(redirect);
         } else {
-          alert('Invalid response format');
+          alert('Invalid user type');
         }
+      } else {
+        alert('Invalid response format');
+      }
     } catch (error) {
       console.error('Error:', error);
-     if(error.response){
-      console.error('response',error.response.data);
-     }
-     alert('google login error')
+      if (error.response) {
+        console.error('response', error.response.data);
+      }
+      alert('google login error')
     }
   };
 
@@ -169,9 +178,9 @@ function Login() {
 
             </Form>
             <div className="mt-3">
-           <button><GoogleLogin onSuccess={responseGoogle}>Login with Google
+              <button><GoogleLogin onSuccess={responseGoogle}>Login with Google
               </GoogleLogin></button>
-         
+
             </div>
           </Card>
         </Col>

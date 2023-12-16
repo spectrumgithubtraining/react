@@ -92,7 +92,7 @@ router.put('/editProduct/:productId', productValidationRules(), validate, async 
           })
       }
 
-    }
+    } 
     catch{
       console.log('error')
 
