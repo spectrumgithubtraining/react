@@ -21,7 +21,7 @@ function Header({ onSearch }) {
   const handleSearch = () => {
     const filteredProducts = allProducts.filter(
       (product) =>
-        product.productName.toLowerCase().includes(searchTerm.toLowerCase())
+        product && product.productName && product.productName.toLowerCase().includes((searchTerm || '').toLowerCase())
     );
     onSearch(filteredProducts);
   };

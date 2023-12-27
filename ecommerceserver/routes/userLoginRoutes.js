@@ -31,7 +31,7 @@ router.post('/login', async (req, res) => {
 
     if (!user) {
       return res.status(401).json({ message: 'Authentication failed' });
-    }
+    } 
 
     // Hash the provided password and compare with stored hashedPassword.
     const hashedInputPassword = crypto.createHash('sha256').update(password).digest('hex');
@@ -50,21 +50,7 @@ router.post('/login', async (req, res) => {
       maxAge: 3600000,
     };
 
-    // res.cookie('token', token, {
-    //   httpOnly: true,
-    //   secure: false,
-    //   path: '/',
-    //   sameSite: 'lax',
-    //   maxAge: 3600000,
-    // });
-    // console.log('Generated Cookie:', res.cookie('token', token, {
-    //   httpOnly: true,
-    //   secure: false,
-    //   path: '/',
-    //   sameSite: 'lax',
-    //   maxAge: 3600000,
-    // }));
-    // console.log("generated cookies1", req.cookies);
+
 
 
     const serializedCookie = cookie.serialize('token', token, cookieOptions);

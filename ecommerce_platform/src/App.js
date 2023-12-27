@@ -13,8 +13,11 @@ import SellerSidebar from './components/seller/SellerSidebar';
 import Productpage from './components/user/ProductPage/Productpage';
 import { Carousel } from 'react-bootstrap';
 import ViewProductPage from './components/user/ProductPage/ViewProductPage/ViewProductPage';
-import CheckoutPage from './components/user/ProductPage/checkOutPage/checkOutPage';
+
 import { ProductProvider } from './components/context/ProductContext';
+import CheckOut from './components/user/ProductPage/checkOutPage/CheckOut';
+
+
 
 
 
@@ -24,22 +27,23 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-      <ProductProvider>
-      <Routes>
-          < Route path="/" element={<Productpage />} />
-          < Route path="/CheckoutPage/:productId" element={<CheckoutPage />} />
-          <Route path="/user/view/:productId" element={<ViewProductPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="registration" element={<Registration />} />
-          <Route path='/sellerdashboard' element={<SellerDashboard />} />
-          <Route path='/addProduct' element={<Add />} />
-          <Route path="/sellerdashboard/edit/:productId" element={<Edit />} />
-          <Route path="/sellerdashboard/view/:productId" element={<View />} />
-          <Route path="/dashboard" element={<SellerSidebar />} />
-        </Routes>
-      </ProductProvider>
-       
-        </BrowserRouter>
+        <ProductProvider>
+          <Routes>
+            < Route path="/" element={<Productpage />} />
+            {/* < Route path="/checkOutPage/:productId " element={<CheckOutPage />} /> */}
+            <Route path='/checkOutPage/:productId' element={<CheckOut/>} />
+            <Route path="/user/view/:productId" element={<ViewProductPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="registration" element={<Registration />} />
+            <Route path='/sellerdashboard' element={<SellerDashboard />} />
+            <Route path='/addProduct' element={<Add />} />
+            <Route path="/sellerdashboard/edit/:productId" element={<Edit />} />
+            <Route path="/sellerdashboard/view/:productId" element={<View />} />
+            <Route path="/dashboard" element={<SellerSidebar />} />
+          </Routes>
+        </ProductProvider>
+
+      </BrowserRouter>
 
 
 
