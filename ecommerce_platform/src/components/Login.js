@@ -80,12 +80,7 @@ const handleLogin = async () => {
       const googleId = payload.sub
       const tokenId = credential;
 
-      //   console.log('Email:', email);
-      //   console.log('First Name:', firstName);
-      //   console.log('Last Name:', lastName);
-      //   console.log('token:',tokenId);
-      //   console.log(payload)
-      // console.log(googleId)
+
 
       const googleResponse = await axios.post('http://localhost:5000/api/user/login/google', {
         email,

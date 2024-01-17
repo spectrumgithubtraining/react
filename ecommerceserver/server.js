@@ -1,5 +1,8 @@
 // server.js
+
 const express = require('express');
+require('dotenv').config();
+
 const mongoose = require('mongoose');
 const cors = require('cors'); 
 const jwt = require('jsonwebtoken');
@@ -12,8 +15,10 @@ const userLogoutRoutes = require('./routes/userRegistrationRoutes');
 const productsRoutes = require('./routes/productsRoutes')
 // const userDetails = require('./routes/UserDetails')
 const cartRoutes = require('./routes/cartRouter')
+const razorpayRouter = require('./routes/razorpayRouter');
 
 const app = express();
+app.use(express.json());
 app.use(bodyParser.json());
 app.use(cors());
 app.use(cookieParser());
@@ -27,13 +32,14 @@ mongoose.connect('mongodb://0.0.0.0:27017/ecommrceplatform', { useNewUrlParser: 
     console.error('Error connecting to MongoDB:', error.message);
   });
 
-const secretKey = 'your-secret-key';
+
 
 app.use('/api/user/register', userRegistrationRoutes);
 app.use('/api/user/login', userLoginRoutes);
 app.use('/api/user/logout', userLogoutRoutes);
 app.use('/api/admin/Product',productsRoutes)
 app.use('/api/admin/Cart',cartRoutes)
+app.use('/razorpay', razorpayRouter);
 // app.use('/api/user/details',userDetails)
 
 

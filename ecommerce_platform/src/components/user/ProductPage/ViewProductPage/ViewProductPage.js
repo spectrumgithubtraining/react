@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../../../Header';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import Cookies from 'js-cookie';
 
 function ViewProductPage() {
   const { productId } = useParams();
@@ -13,7 +15,6 @@ function ViewProductPage() {
 
   useEffect(() => {
     fetchProductDetails();
-    
   }, [productId]);
 
   const fetchProductDetails = async () => {
@@ -33,36 +34,55 @@ function ViewProductPage() {
       alert('Please enter a valid quantity (1-20)');
     }
   };
-  const handleAddToCheckout = async () => {
+
+  const handleAddToCart = async () => {
     const isLoggedIn = sessionStorage.getItem('token');
-  
+
     try {
       if (isLoggedIn) {
-        // Send token in request header
-        const response = await axios.post('http://localhost:5000/api/admin/Cart/addCart', {
-          productId,
-          quantity: selectedQuantity
-        }, {
-          headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
-        });
-  
-        if (response.status === 201) {
-          // Navigate to checkout after successful cart addition
-          navigate(`/checkOutPage/${productId}`);
+        const decodedToken = jwtDecode(isLoggedIn);
+        const userId = decodedToken.userId;
+        console.log("decoded",userId)
+
+        // Get existing cart cookie or create an empty one
+        const cartCookie = Cookies.get(userId) || '{}';
+        const parsedCartCookie = JSON.parse(cartCookie);
+
+        // Check if the product is already in the cart
+        if (parsedCartCookie[productId]) {
+          // Update existing product quantity
+          parsedCartCookie[productId].quantity += selectedQuantity;
+          console.log('Product added to existing cart entry.'); // Logging for debugging
         } else {
-          console.log("error from server")
+          // Add new product to cart cookie
+          parsedCartCookie[productId] = {
+            productDetails: productData,
+            userId,
+            quantity: selectedQuantity,
+          };
+          console.log('New product added to cart.'); // Logging for debugging
+          navigate('/checkOutPage')
         }
+
+        // Set the updated cart cookie
+        Cookies.set(userId, JSON.stringify(parsedCartCookie));
+
+        // Notify user of successful addition (visually or with a message)
+        console.log('Cart cookie updated successfully.'); // Logging for debugging
       } else {
+        // Handle the case where the user is not logged in
+        console.log('User not logged in.'); // Logging for debugging
+        // Redirect to login page or display a message
         navigate('/login');
       }
     } catch (error) {
-      console.log("error",error)
+      console.error('Error adding product to cart:', error);
+      // Handle errors appropriately (e.g., display error messages)
     }
   };
-  
   return (
     <div>
-      <Header />
+      <Header  />
 
       <section className="py-5">
         <div className="container px-4 px-lg-5 my-5">
@@ -97,7 +117,7 @@ function ViewProductPage() {
                 <button
                   className="btn btn-outline-dark flex-shrink-0 me-3 "
                   type="button"
-                  onClick={handleAddToCheckout}
+                  onClick={handleAddToCart}
                 >
                   <i className="bi-cart-fill me-1"></i> Buy Now
                 </button>

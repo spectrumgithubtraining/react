@@ -16,8 +16,8 @@ import ViewProductPage from './components/user/ProductPage/ViewProductPage/ViewP
 
 import { ProductProvider } from './components/context/ProductContext';
 import CheckOut from './components/user/ProductPage/checkOutPage/CheckOut';
-
-
+import Payment from './components/user/ProductPage/Payment/Payment';
+import RazorPay from './components/user/ProductPage/Payment/RazorPay';
 
 
 
@@ -31,7 +31,7 @@ function App() {
           <Routes>
             < Route path="/" element={<Productpage />} />
             {/* < Route path="/checkOutPage/:productId " element={<CheckOutPage />} /> */}
-            <Route path='/checkOutPage/:productId' element={<CheckOut/>} />
+            <Route path='/checkOutPage' element={<CheckOut/>} />
             <Route path="/user/view/:productId" element={<ViewProductPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="registration" element={<Registration />} />
@@ -40,6 +40,8 @@ function App() {
             <Route path="/sellerdashboard/edit/:productId" element={<Edit />} />
             <Route path="/sellerdashboard/view/:productId" element={<View />} />
             <Route path="/dashboard" element={<SellerSidebar />} />
+            <Route path="/payment" element={<Payment />} />
+            <Route path="/razorpay" element={<RazorPay />} />
           </Routes>
         </ProductProvider>
 

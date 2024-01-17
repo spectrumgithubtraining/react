@@ -1,247 +1,291 @@
-// import React, { useState, useEffect } from 'react';
-// import { useParams } from 'react-router-dom';
-// import axios from 'axios';
+
+import React, { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
+import { Container, Row, Col, Card, CardBody, CardTitle, Button, Form, FormGroup, Modal } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
 
-// const CheckOut = () => {
-//     const [userData, setUserData] = useState({ email: '', address: '', contact: '' });
-//     const { productId } = useParams();
-//     const [product, setProduct] = useState('');
-
-//     // Fetch product data
-//     const fetchProduct = async () => {
-//         try {
-//             const result = await axios.get(`http://localhost:5000/api/admin/Cart/viewCart/${productId}`);
-//             setProduct(result.data.productCart); // Assuming the response has a 'productCart' field
-//             console.log(product)
-//         } catch (error) {
-//             console.error('Error fetching product:', error);
-//         }
-//     };
-
-//     useEffect(() => {
-//         fetchProduct();
-//     }, [productId]);
-
-//     // Assuming productData contains quantity information
-//     const { quantity } = product.;
-
-//     // Calculate total price based on quantity
-//     const totalPrice = product && quantity ? product.price * quantity : 0;
-
-//     const handleInputChange = (e) => {
-//         setUserData({ ...userData, [e.target.name]: e.target.value });
-//     };
-
-//     const handlePlaceOrder = () => {
-//         // Add logic to place the order and update any necessary data
-//         // For simplicity, just log the order details in this example
-//         console.log('Placing order:', {
-//             product,
-//             userData,
-//             totalPrice,
-//         });
-//     };
-
-//     return (
-//         <div className="container mt-5">
-//             <h1 className="mb-4">Checkout</h1>
-//             {product && (
-//                 <div className="row">
-//                     <div className="col-md-6">
-//                         {/* Product Information */}
-//                         <div className="card mb-4">
-//                             <div className="card-body">
-//                                 <h5 className="card-title">{product.productName}</h5>
-//                                 <p className="card-text">Price: {product.price} $</p>
-//                                 {/* Add more product details as needed */}
-//                             </div>
-//                         </div>
-
-//                         {/* User Information Form */}
-//                         <form>
-//                             <div className="mb-3">
-//                                 <label htmlFor="email" className="form-label">Email</label>
-//                                 <input
-//                                     type="email"
-//                                     className="form-control"
-//                                     id="email"
-//                                     name="email"
-//                                     value={userData.email}
-//                                     onChange={handleInputChange}
-//                                     required
-//                                 />
-//                             </div>
-
-//                             <div className="mb-3">
-//                                 <label htmlFor="address" className="form-label">Address</label>
-//                                 <input
-//                                     type="text"
-//                                     className="form-control"
-//                                     id="address"
-//                                     name="address"
-//                                     value={userData.address}
-//                                     onChange={handleInputChange}
-//                                     required
-//                                 />
-//                             </div>
-
-//                             <div className="mb-3">
-//                                 <label htmlFor="contact" className="form-label">Contact</label>
-//                                 <input
-//                                     type="text"
-//                                     className="form-control"
-//                                     id="contact"
-//                                     name="contact"
-//                                     value={userData.contact}
-//                                     onChange={handleInputChange}
-//                                     required
-//                                 />
-//                             </div>
-
-//                             {/* Add more form fields as needed */}
-//                         </form>
-//                     </div>
-
-//                     <div className="col-md-6">
-//                         {/* Order Summary */}
-//                         <div className="card">
-//                             <div className="card-body">
-//                                 <h5 className="card-title">Order Summary</h5>
-//                                 <p className="card-text">Product: {product.productName}</p>
-//                                 <p className="card-text">Total Price: {totalPrice} $</p>
-//                                 {/* Add more order details as needed */}
-//                             </div>
-//                         </div>
-//                     </div>
-//                 </div>
-//             )}
-//             {/* Place Order Button */}
-//             <div className="mt-4">
-//                 <button className="btn btn-primary" onClick={handlePlaceOrder}>Place Order</button>
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default CheckOut;
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
 
 function CheckOut() {
-    const { productId } = useParams();
-    const [cproduct, setCproduct] = useState('');
-    const [product,setProduct] = useState('')
+  const [cartItems, setCartItems] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalQuantity, setTotalQuantity] = useState(0);
 
 
-    const fetchData = async ()=>{
-        const result = await axios.get(`http://localhost:5000/api/admin/Cart/viewCart/${productId}`)
+  useEffect(() => {
+    // Retrieve cart data using manual parsing for compatibility
+    const isLoggedIn = sessionStorage.getItem('token');
+    if(isLoggedIn){
+      const decodedToken = jwtDecode(isLoggedIn);
+  
+        const userId = decodedToken.userId;
+        const cartCookie = Cookies.get(userId);
+        const parsedCartCookie = cartCookie ? JSON.parse(cartCookie) : {};
+        const userCartItems = Object.values(parsedCartCookie)
+            .filter(item => item.userId === userId); // replace loggedInUserId with the actual user ID
     
-        setCproduct(result.data.productCart)
+          setCartItems(userCartItems);
        
     }
 
-    const fetchProductData = async ()=>{
-      const result = await axios.get(`http://localhost:5000/api/admin/Product/viewProduct/${productId}`)
-      console.log("productData",result)
-      setProduct(result.data.product)
+   
+  }, []);
+  
+  useEffect(() => {
+    // Calculate totals
+    let productsCount = 0;
+    let totalPrice = 0;
+    let totalQuantity = 0;
+
+    cartItems.forEach((item) => {
+      productsCount += 1;
+      totalPrice += item.quantity * item.productDetails.price;
+      totalQuantity += item.quantity;
+    });
+
+    setTotalProducts(productsCount);
+    setTotalPrice(totalPrice);
+    setTotalQuantity(totalQuantity);
+  }, [cartItems]);
+
+  const isLoggedIn = sessionStorage.getItem('token');
+
+ 
+    const handleDeleteProduct = (productId) => {
+      const isLoggedIn = sessionStorage.getItem('token');
+      const decodedToken = jwtDecode(isLoggedIn);
       
+            const userId = decodedToken.userId;
+    // Update cart state:
+    setCartItems((prevCartItems) =>
+      prevCartItems.filter((item) => item.productDetails.id !== productId)
+    );
+  
+    // Update cookie (using manual parsing):
+    const cartCookie = Cookies.get(userId);
+    if (cartCookie) {
+      const parsedCartCookie = JSON.parse(cartCookie);
+      const itemToDelete = parsedCartCookie[productId];
+      if (itemToDelete && itemToDelete.quantity) {
+        delete parsedCartCookie[productId];
+        Cookies.set(userId, JSON.stringify(parsedCartCookie));
+      }
     }
-    useEffect(()=>{
-      fetchData()
-      fetchProductData()
-    },[productId])
-
-    const {quantity} = cproduct
-    const totalPrice = product && quantity ? product.price * quantity : 0;
-    
-
-    const handlePlaceOrder=()=>
-    {
-      alert("processing")
+    if (cartItems.length === 1) {
+      setShowModal(true);
     }
 
 
-  return (
-    <div className="container mt-5">
-                <h1 className="mb-4">Checkout</h1>
-                {product && (
-                    <div className="row">
-                        <div className="col-md-6">
-                            {/* Product Information */}
-                            <div className="card mb-4">
-                                <div className="card-body">
-                                    <h5 className="card-title">{product.productName}</h5>
-                                    <p className="card-text">Price: {product.price} $</p>
-                                    {/* Add more product details as needed */}
-                                </div>
-                            </div>
+  };
+  
+  const handleIncrementQuantity = (productId) => {
+    const isLoggedIn = sessionStorage.getItem('token');
+    const decodedToken = jwtDecode(isLoggedIn);
     
-                            {/* User Information Form */}
-                            <form>
-                                <div className="mb-3">
-                                    <label htmlFor="email" className="form-label">Email</label>
-                                    <input
-                                        type="email"
-                                        className="form-control"
-                                        id="email"
-                                        name="email"
-                                        // value={userData.email}
-                                        // onChange={handleInputChange}
-                                        required
-                                    />
-                                </div>
+          const userId = decodedToken.userId;
+    setCartItems((prevCartItems) =>
+      prevCartItems.map((item) =>
+        item.productDetails.id === productId
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    );
+  
+    // Update cookie:
+    const cartCookie = Cookies.get(userId) || '{}';
+    const parsedCartCookie = JSON.parse(cartCookie);
+    parsedCartCookie[productId].quantity += 1;
+    Cookies.set(userId, JSON.stringify(parsedCartCookie));
+  };
+  
+  const handleDecrementQuantity = (productId) => {
+    const isLoggedIn = sessionStorage.getItem('token');
+    const decodedToken = jwtDecode(isLoggedIn);
     
-                                <div className="mb-3">
-                                    <label htmlFor="address" className="form-label">Address</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="address"
-                                        name="address"
-                                        // value={userData.address}
-                                        // onChange={handleInputChange}
-                                        required
-                                    />
-                                </div>
+          const userId = decodedToken.userId;
+    setCartItems((prevCartItems) =>
+      prevCartItems.map((item) =>
+        item.productDetails.id === productId && item.quantity > 1
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+
+      )
+    );
+  
+    // Update cookie:
+    const cartCookie = Cookies.get(userId) || '{}';
+    const parsedCartCookie = JSON.parse(cartCookie);
+    parsedCartCookie[productId].quantity -= 1;
+    if (parsedCartCookie[productId].quantity === 0) {
+      delete parsedCartCookie[productId];
+      if (cartItems.length === 1) {
+        setShowModal(true);
+        navigate('/');
+      }
+  
+    }
+    Cookies.set(userId, JSON.stringify(parsedCartCookie));
     
-                                <div className="mb-3">
-                                    <label htmlFor="contact" className="form-label">Contact</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="contact"
-                                        name="contact"
-                                        // value={userData.contact}
-                                        // onChange={handleInputChange}
-                                        required
-                                    />
-                                </div>
+  
+
     
-                                {/* Add more form fields as needed */}
-                            </form>
-                        </div>
-    
-                        <div className="col-md-6">
-                            {/* Order Summary */}
-                            <div className="card">
-                                <div className="card-body">
-                                    <h5 className="card-title">Order Summary</h5>
-                                    <p className="card-text">Product: {product.productName}</p>
-                                    <p className="card-text">Total Price: {totalPrice} $</p>
-                                    {/* Add more order details as needed */}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-                {/* Place Order Button */}
-                <div className="mt-4">
-                    <button className="btn btn-primary" onClick={handlePlaceOrder}>Place Order</button>
-                </div>
-            </div>
-  )
+  };
+  const handleCloseModal = () => {
+    setShowModal(false);
+    navigate('/');
+
+  };
+
+  if(isLoggedIn){
+
+    return (
+      <section
+  
+  
+        className="h-100 h-custom">
+        <Container
+          className="py-5 h-100">
+  
+  
+  
+          <Row
+  
+  
+            className="d-flex justify-content-center align-items-center h-100">
+  
+            <Col xs={12} md={7}>
+              <Card>
+                <CardBody>
+                  <h5>
+                    <Link to="/" className="text-body">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left mx-1" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+                      </svg>
+  
+                      Continue shopping
+                    </Link>
+                  </h5>
+                  <table className="table table-borderless"> {/* Use table for table-like layout */}
+                    <thead>
+                      <tr>
+                        <th>Product</th>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {cartItems.map((item) => (
+                        <tr key={item.productDetails.id}>
+                          <td>
+                            <img
+                              src={item.productDetails.productImage}
+                              alt={item.productDetails.productName}
+                              className="img-fluid rounded-3"
+                              style={{ width: 65 }}
+                            />
+                            <br />
+                            {item.productDetails.productName}
+                          </td>
+                          <td>{item.productDetails.description}</td>
+                          <td>
+                            <Button
+                              variant="light"
+                              onClick={() => handleIncrementQuantity(item.productDetails.id)}
+                              className="border-0"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                              </svg>
+                            </Button>
+                            {item.quantity}
+  
+              
+                            <Button
+                              variant="light"
+                              onClick={() => handleDecrementQuantity(item.productDetails.id)}
+                              className="border-0"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                                <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
+                              </svg>
+                            </Button>
+                          
+  
+  
+                          </td>
+                          <td>${item.productDetails.price}</td>
+                          <td>
+  
+                            <Button variant="link" onClick={() => handleDeleteProduct(item.productDetails.id)}>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                              </svg>
+                            </Button>
+  
+                          </td>
+  
+  
+                        </tr>
+  
+                      ))}
+  
+                    </tbody>
+                  </table>
+  
+                </CardBody>
+              </Card>
+            </Col>
+            <Col xs={12} md={5}>
+              <Card className="bg-primary text-white rounded-3">
+                <CardBody>
+                  <CardTitle>
+                    <h5>Total Price</h5>
+                  </CardTitle>
+                  <Form>
+                    <FormGroup>
+                      <p>Total Products: {totalProducts}</p>
+                      <p>Total Quantity: {totalQuantity}</p>
+                      <p>Total Price: ${totalPrice.toFixed(2)}</p>
+                    </FormGroup>
+                    <Button variant="light">Proceed to Payment</Button>
+                  </Form>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Empty Cart</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>No items in the cart. Redirecting to the home page.</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary" onClick={handleCloseModal}>
+              Yes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </section>
+    );
+  }
+  else{
+    alert("Please Login to check Cart Details")
+    navigate("/login")
+  }
+
+
+ 
+
+
 }
 
-export default CheckOut
+export default CheckOut;

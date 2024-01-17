@@ -3,6 +3,7 @@ const router = express.Router();
 const { productValidationRules, validate } = require('../validation/admin');
 const {Product} = require('../models/product');
 const { resolvePath } = require('react-router-dom');
+const createOrder = require('../controllers/orderController')
 
 // Route to add a new product
 
@@ -117,6 +118,9 @@ router.put('/editProduct/:productId', productValidationRules(), validate, async 
     res.status(500).json({ message: 'Server error', error: error });
   }
 });
+router.post('/orders', createOrder.createOrder);
+
+// router.get('details',createOrder.detailsOrder)
   
 module.exports = router;
 
