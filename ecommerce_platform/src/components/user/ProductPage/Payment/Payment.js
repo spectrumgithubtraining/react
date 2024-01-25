@@ -4,8 +4,213 @@ import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import uuid from 'react-uuid';
-import RazorPay from './RazorPay';
+
+
+
+// const Payment = () => {
+
+  // const[orderId,setOrderId] = useState()
+  // const [cartItems, setCartItems] = useState([]);
+  // const [totalProducts, setTotalProducts] = useState(0);
+  // const [totalPrice, setTotalPrice] = useState(0);
+  // const [totalQuantity, setTotalQuantity] = useState(0);
+  // const [formData, setFormData] = useState({
+  //   orderId:'',
+  //   userId: '',
+  //   deliveryState: '',
+  //   firstName: '',
+  //   lastName: '',
+  //   companyName: '',
+  //   address: '',
+  //   email: '',
+  //   phone: '',
+  //   additionalInfo: '',
+  //   totalPrice: 0,
+
+  //   products: [],
+  // });
+  // useEffect(() => {
+
+  //   fetchCartItems();
+
+  // }, []);
+  // const handleFormSubmit = async (event) => {
+  //   event.preventDefault();
+    
+  
+  //   try {
+
+  //     await handlePayment(); 
+     
+     
+  //   } catch (error) {
+  //     console.error('Error during form submission:', error);
+  //   }
+  // };
+  
+ 
+  
+  
+  // const handlePayment = async () => {
+   
+  //     try {
+        
+       
+  //       const orderResponse = await axios.post('http://localhost:5000/razorpay/orders', { amount: totalPrice });
+  //       console.log("ordersd",orderResponse)
+  //       const orderData = orderResponse.data.data;
+
+       
+
+        
+  //       const options = {
+  //         key: 'rzp_test_3TqyiyG0cZ9tNI',
+  //         amount: orderData.amount,
+  //         currency: orderData.currency,
+  //         name: formData.firstName,
+  //         description: 'Test Transaction',
+  //         image: 'your_store_logo_url',
+  //         order_id: orderData.id,
+  //         handler: async (response) => {
+  //           console.log("res",response.razorpay_order_id)
+  //           setOrderId(response.razorpay_order_id)
+  //           setFormData((prevData) => ({
+  //             ...prevData,
+  //             orderId
+  //           }));
+  //           try {
+              
+      
+
+  //             const verifyResponse = await axios.post('http://localhost:5000/razorpay/verify', {
+  //               razorpay_order_id: response.razorpay_order_id,
+  //               razorpay_payment_id: response.razorpay_payment_id,
+  //               razorpay_signature: response.razorpay_signature,
+  //               formData: formData, // Pass the form data to the server
+  //             });         
+              
+  //             const isLoggedIn = sessionStorage.getItem('token');
+  //         if (isLoggedIn) {
+  //           const decodedToken = jwtDecode(isLoggedIn);
+  //           const userId = decodedToken.userId;
+  //           Cookies.remove(userId);
+  //         }
+  //           } catch (error) {
+  //             console.log(error);
+  //           }
+  //         },
+  //         theme: {
+  //           color: '#3399cc',
+  //         },
+  //       };
+      
+    
+        
+      
+
+        
+
+  //       const rzp1 = new window.Razorpay(options);
+  //       rzp1.open();
+  //       const isLoggedIn = sessionStorage.getItem('token');
+  //       if (isLoggedIn) {
+  //         const decodedToken = jwtDecode(isLoggedIn);
+  //         const userId = decodedToken.userId;
+  //         Cookies.remove(userId);
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+   
+  //   const fetchCartItems = async () => {
+  //     const isLoggedIn = sessionStorage.getItem('token');
+  //     if (isLoggedIn) {
+  //       const decodedToken = jwtDecode(isLoggedIn);
+  //       const userId = decodedToken.userId;
+  //       const cartCookie = Cookies.get(userId);
+  //       const parsedCartCookie = cartCookie ? JSON.parse(cartCookie) : {};
+  //       const userCartItems = Object.values(parsedCartCookie)
+  //         .filter((item) => item.userId === userId)
+  //         .map((item) => ({
+  //           ...item,
+  //           productDetails: item.productDetails || {},
+  //         }));
+  //       console.log("usercart", userCartItems)
+  //       if (userCartItems.length > 0) {
+  //         const productDetails = userCartItems.map((item) => ({
+  //           productId: item.productDetails.id,
+  //           quantity: item.quantity,
+  //           productName: item.productDetails.productName,
+  //           totalPrice: item.quantity * item.productDetails.price,
+  //         }));
+  //         console.log("productDetails", productDetails)
+  //         let productsCount = 0;
+  //         let totalPrice = 0;
+  //         let totalQuantity = 0;
+  
+  //         userCartItems.forEach((item) => {
+  //           productsCount += 1;
+  //           totalPrice += item.quantity * item.productDetails.price;
+  
+  //           totalQuantity += item.quantity;
+  //         });
+  
+  
+  //         setTotalProducts(productsCount);
+  //         setTotalPrice(totalPrice);
+  //         setTotalQuantity(totalQuantity);
+  
+  //         setFormData((prevData) => ({
+  //           ...prevData,
+  //           products: productDetails,
+  //           userId,
+  //           totalPrice
+  //         }));
+  //       }
+  //       setCartItems(userCartItems);
+  //       setFormData((prevData) => ({
+  //         ...prevData,
+          
+  //         userId: userId,
+  //         totalPrice: totalPrice
+  //       }));
+  //     }
+  
+  //   }
+  //   const submitOrder = async () => {
+  //     try {
+  //       const response = await axios.post(
+  //         'http://localhost:5000/api/admin/Product/orders', formData);
+  
+  //       if (response.status === 200) {
+   
+  //         console.log('Order submitted successfully');
+  //         console.log('formdata', formData);
+  //       } else {
+  //         console.error('Failed to submit order');
+  //       }
+  //     } catch (error) {
+  //       console.error('Error:', error);
+  //     }
+  //   };
+  //   const handleInputChange = (event) => {
+  //     const { name, value } = event.target;
+  //     ;
+  
+  //     setFormData((prevData) => ({
+  //       ...prevData,
+  //       [name]: value
+  //     }));
+  //   };
+//   import React, { useState, useEffect } from 'react';
+// import { Button, Card, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
+// import { jwtDecode } from 'jwt-decode';
+// import Cookies from 'js-cookie';
+// import axios from 'axios';
+// import { Link } from 'react-router-dom';
+
+// import RazorPay from './RazorPay';
 
 const Payment = () => {
   const [showRazorpay, setShowRazorpay] = useState(false);
@@ -14,8 +219,10 @@ const Payment = () => {
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantity, setTotalQuantity] = useState(0);
+  const [productDetail, setProductDetails] = useState([]);
+
   const [formData, setFormData] = useState({
-    orderId:'',
+  
     userId: '',
     deliveryState: '',
     firstName: '',
@@ -29,6 +236,14 @@ const Payment = () => {
 
     products: [],
   });
+  useEffect(() => {
+    // Update formData when productDetails changes
+    setFormData((prevData) => ({
+      ...prevData,
+      products: productDetail,
+    }));
+  }, [productDetail]);
+  
   const fetchCartItems = async () => {
     const isLoggedIn = sessionStorage.getItem('token');
     if (isLoggedIn) {
@@ -50,6 +265,11 @@ const Payment = () => {
           productName: item.productDetails.productName,
           totalPrice: item.quantity * item.productDetails.price,
         }));
+
+        setProductDetails(productDetails);
+        console.log(productDetail)
+     
+
         console.log("productDetails", productDetails)
         let productsCount = 0;
         let totalPrice = 0;
@@ -69,45 +289,43 @@ const Payment = () => {
 
         setFormData((prevData) => ({
           ...prevData,
-          products: productDetails,
+          products: productDetail,
+          userId: userId,
+          totalPrice: totalPrice
 
         }));
       }
-      setOrderId(uuid().slice(0, 5)); // Generate orderId
+     
 
       setCartItems(userCartItems);
 
 
-      setFormData((prevData) => ({
-        ...prevData,
-        orderId:orderId,
-        userId: userId,
-        totalPrice: totalPrice
-      }));
+      // setFormData((prevData) => ({
+      //   ...prevData,
+        
+      //   userId: userId,
+      //   totalPrice: totalPrice
+      // }));
     }
 
   }
-  useEffect(() => {
-    setOrderId(uuid().slice(0, 5));
-    fetchCartItems();
+ 
+  // const submitOrder = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       'http://localhost:5000/api/admin/Product/orders', formData);
 
-  }, []);
-  const submitOrder = async () => {
-    try {
-      const response = await axios.post(
-        'http://localhost:5000/api/admin/Product/orders', formData);
-
-      if (response.status === 200) {
-        setShowRazorpay(true);
-        console.log('Order submitted successfully');
-        console.log('formdata', formData);
-      } else {
-        console.error('Failed to submit order');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+  //     if (response.status === 200) {
+ 
+  //       console.log('Order submitted successfully');
+  //       console.log('formdata', formData);
+  //     } else {
+  //       console.error('Failed to submit order');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   }
+  // };
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     ;
@@ -119,15 +337,21 @@ const Payment = () => {
   };
   const handleFormSubmit = (event) => {
     event.preventDefault()
+    handlePayment()
     fetchCartItems()
-    submitOrder()
+  
+ 
 
 
   }
   const handlePayment = async () => {
       try {
         const orderResponse = await axios.post('http://localhost:5000/razorpay/orders', { amount: totalPrice });
+        console.log("ordersd",orderResponse)
         const orderData = orderResponse.data.data;
+        setOrderId(orderData.id)
+
+
 
         const options = {
           key: 'rzp_test_3TqyiyG0cZ9tNI',
@@ -138,9 +362,76 @@ const Payment = () => {
           image: 'your_store_logo_url',
           order_id: orderData.id,
           handler: async (response) => {
+            console.log(response)
             try {
-              const verifyResponse = await axios.post('http://localhost:5000/razorpay/verify', response);
-              console.log(verifyResponse.data);
+              const isLoggedIn = sessionStorage.getItem('token');
+              if (isLoggedIn) {
+                const decodedToken = jwtDecode(isLoggedIn);
+                const userId = decodedToken.userId;
+                const cartCookie = Cookies.get(userId);
+                const parsedCartCookie = cartCookie ? JSON.parse(cartCookie) : {};
+                const userCartItems = Object.values(parsedCartCookie)
+                  .filter((item) => item.userId === userId)
+                  .map((item) => ({
+                    ...item,
+                    productDetails: item.productDetails || {},
+                  }));
+                console.log("usercart", userCartItems)
+                if (userCartItems.length > 0) {
+                  const productDetails = userCartItems.map((item) => ({
+                    productId: item.productDetails.id,
+                    quantity: item.quantity,
+                    productName: item.productDetails.productName,
+                    totalPrice: item.quantity * item.productDetails.price,
+                  }));
+             
+                  console.log("productDetails", productDetails)
+                  let productsCount = 0;
+                  let totalPrice = 0;
+                  let totalQuantity = 0;
+          
+                  userCartItems.forEach((item) => {
+                    productsCount += 1;
+                    totalPrice += item.quantity * item.productDetails.price;
+          
+                    totalQuantity += item.quantity;
+                  });
+                  setProductDetails(productDetails)
+          
+                  setTotalProducts(productsCount);
+                  setTotalPrice(totalPrice);
+                  setTotalQuantity(totalQuantity);
+          
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    products: productDetail,
+                    userId: userId,
+                    totalPrice: totalPrice
+          
+                  }));
+                }
+               
+          
+                setCartItems(userCartItems);
+                console.log("formData",formData)
+          
+          
+                // setFormData((prevData) => ({
+                //   ...prevData,
+                  
+                //   userId: userId,
+                //   totalPrice: totalPrice
+                // }));
+              }
+          
+
+              const verifyResponse = await axios.post('http://localhost:5000/razorpay/verify', {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                formData: formData, // Pass the form data to the server
+              });                     
+               console.log(verifyResponse.data);
             } catch (error) {
               console.log(error);
             }
@@ -152,14 +443,24 @@ const Payment = () => {
 
         const rzp1 = new window.Razorpay(options);
         rzp1.open();
+         const isLoggedIn = sessionStorage.getItem('token');
+        if (isLoggedIn) {
+          const decodedToken = jwtDecode(isLoggedIn);
+          const userId = decodedToken.userId;
+          Cookies.remove(userId);
+        }
       } catch (error) {
         console.log(error);
       }
     };
+    useEffect(() => {
 
- 
-
-
+      fetchCartItems();
+  
+    }, []);
+  
+   
+  
 
 
   return (
@@ -290,9 +591,7 @@ const Payment = () => {
                       <Button  type="submit" className="button-order col-md-10">
                         Place order
                       </Button>
-                      <Button  type="button"    onClick={handlePayment}   className="button-order col-md-10">
-                        Place 
-                      </Button>
+                      
                     </div>
                   </Form>
                 </Card.Body>
@@ -302,23 +601,8 @@ const Payment = () => {
           
            
           )}
-          {/* {showRazorpay && (
-          <RazorPay
-            totalPrice={totalPrice} // Pass the state variable
-            orderId={orderId}
-            userId={formData.userId} // Use the userId from the formData
-            onSuccess={(response) => {
-              // Handle success
-              console.log('Payment successful:', response);
-            }}
-            onCancel={() => {
-              // Handle cancellation
-              console.log('Payment cancelled');
-            }}
-          />
-        )} */}
-          
          
+    
         {cartItems.length === 0 && (
           <div className="text-center">
             <h3>Add products to buy</h3>

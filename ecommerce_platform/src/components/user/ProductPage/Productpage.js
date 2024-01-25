@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from '../../Header';
 import { Link } from 'react-router-dom';
+import Carousel from 'react-bootstrap/Carousel';
+import Footer from '../../Footer';
 
 
 const ProductPage = () => {
@@ -40,8 +42,45 @@ const ProductPage = () => {
 
   return (
     <div>
+ 
+
       <Header onSearch={handleSearch} />
-      <div className="container">
+      
+      <div className="container mt-5">
+    
+      <Carousel data-bs-theme="dark">
+      <Carousel.Item>
+        <img
+          className="d-block w-100"
+          src="https://i.postimg.cc/jjXGKb2g/fashion-collection-design-shopping-graphic-words.jpg"
+          alt="First slide"
+        />
+        <Carousel.Caption>
+       
+        </Carousel.Caption>
+      </Carousel.Item>
+      <Carousel.Item>
+        <img
+          className="d-block w-100"
+          src="https://i.postimg.cc/jjXGKb2g/fashion-collection-design-shopping-graphic-words.jpg"
+          alt="Second slide"
+        />
+        <Carousel.Caption>
+         
+        </Carousel.Caption>
+      </Carousel.Item>
+      <Carousel.Item>
+        <img
+          className="d-block w-100"
+          src="https://i.postimg.cc/jjXGKb2g/fashion-collection-design-shopping-graphic-words.jpg"
+          alt="Third slide"
+        />
+        <Carousel.Caption>
+       
+        </Carousel.Caption>
+      </Carousel.Item>
+    </Carousel>
+  
         <div className="row text-center">
           <div className="p-2 col-3">
             <button onClick={() => handleFilter('')} type="button" className="btn btn-light">
@@ -96,7 +135,9 @@ const ProductPage = () => {
           </div>
         </div>
       </section>
+      <Footer></Footer>
     </div>
+    
   );
 };
 

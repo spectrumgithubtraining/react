@@ -69,7 +69,7 @@ function ViewProductPage() {
 
         // Notify user of successful addition (visually or with a message)
         console.log('Cart cookie updated successfully.'); // Logging for debugging
-      } else {
+      } else{
         // Handle the case where the user is not logged in
         console.log('User not logged in.'); // Logging for debugging
         // Redirect to login page or display a message
@@ -119,7 +119,7 @@ function ViewProductPage() {
                   type="button"
                   onClick={handleAddToCart}
                 >
-                  <i className="bi-cart-fill me-1"></i> Buy Now
+                  <i className="bi-cart-fill me-1"></i> Add To cart
                 </button>
               </div>
             </div>

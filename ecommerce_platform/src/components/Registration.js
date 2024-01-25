@@ -123,7 +123,7 @@ function Registration() {
       <Row className="row-card">
         <Col md={6} className="d-none d-md-block">
           <Card className="my-2">
-            <Card.Img src="" alt="Registration form" fluid />
+            <Card.Img src="https://i.postimg.cc/YSkZcgy1/portrait-young-japanese-woman-with-jacket.jpg" alt="Registration form" fluid />
           </Card>
         </Col>
         <Col md={6}>

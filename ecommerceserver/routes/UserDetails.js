@@ -1,24 +1,59 @@
-// // userRegistrationRoutes.js
-// const express = require('express');
-// const router = express.Router();
-// const { User } = require('../models/user');
+const express = require('express');
+const axios = require('axios');
+const bodyParser = require('body-parser');
 
-// // User details route
-// router.get('/details/:userId', async (req, res) => {
-//   const { userId } = req.params;
+const router = express.Router();
+router.use(bodyParser.json());
+const {User} = require('../models/user')
+const crypto = require('crypto')
 
-//   try {
-//     const existingUser = await User.findOne({ _id:userId });
+async function verifyRecaptcha(recaptchaResponse) {
+  try {
+    const response = await axios.post(
+      "https://www.google.com/recaptcha/api/siteverify",
+      null,
+      {
+        params: {
+          secret: "6LfhlVkpAAAAAKE7fzOJKnrfQ6DyKRsXILKxrpbg", 
+          response: recaptchaResponse,
+        },
+      }
+    );
 
-//     if (existingUser) {
-//       return res.status(200).json({ message: 'User Found', user: existingUser });
-//     } else {
-//       return res.status(400).json({ message: 'No user with that id' });
-//     }
-//   } catch (error) {
-//     console.error('Server error:', error);
-//     res.status(500).json({ message: 'Server error' });
-//   }
-// });
+    return response.data.success;
+  } catch (error) {
+    console.error("Error verifying reCAPTCHA:", error);
+    return false;
+  }
+}
 
-// module.exports = router;
+router.post('/submit', async (req, res) => {
+  const { email, newPassword, recaptchaToken } = req.body;
+
+  try {
+    // Verify reCAPTCHA
+    const isRecaptchaValid = await verifyRecaptcha(recaptchaToken);
+console.log(isRecaptchaValid)
+    if (!isRecaptchaValid) {
+      return res.status(400).json({ error: "reCAPTCHA verification failed" });
+    }
+
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      console.log("Existing User:", existingUser);
+      const hashedPassword = crypto.createHash('sha256').update(newPassword).digest('hex');
+      existingUser.hashedPassword = hashedPassword;
+      await existingUser.save();
+      res.json({ success: true, message: "Password change successful" });
+    } else {
+      console.log("User not found for email:", email);
+      res.status(404).json({ error: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error handling password change:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+module.exports = router;

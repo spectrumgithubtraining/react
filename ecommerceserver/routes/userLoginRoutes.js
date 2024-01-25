@@ -35,7 +35,7 @@ router.post('/login', async (req, res) => {
 
     // Hash the provided password and compare with stored hashedPassword.
     const hashedInputPassword = crypto.createHash('sha256').update(password).digest('hex');
-    const token = jwt.sign({ userId: user._id, userType: user.userType }, secretKey, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id, userType: user.userType , email:user.email}, secretKey, { expiresIn: '1h' });
     if (hashedInputPassword !== user.hashedPassword) {
       return res.status(401).json({ message: 'Authentication failed' });
     }
@@ -80,7 +80,7 @@ router.post('/google', async (req, res) => {
     const existingUser = await User.findOne({ email })
     if (existingUser) {
       // Generate a JWT token with user type information
-      const token = jwt.sign({ googleId, userType }, secretKey, { expiresIn: '1h' });
+      const token = jwt.sign({ googleId, userType,email, userId: existingUser._id }, secretKey, { expiresIn: '1h' });
 
 
 
@@ -106,7 +106,7 @@ router.post('/google', async (req, res) => {
 
 
       // Generate a JWT token with user type information
-      const token = jwt.sign({ googleId, userType }, secretKey, { expiresIn: '1h' });
+      const token = jwt.sign({googleId, userType,email, userId: newUser._id}, secretKey, { expiresIn: '1h' });
 
 
 

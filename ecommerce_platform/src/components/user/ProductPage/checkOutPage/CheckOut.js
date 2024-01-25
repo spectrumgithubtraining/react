@@ -50,95 +50,97 @@ function CheckOut() {
     setTotalProducts(productsCount);
     setTotalPrice(totalPrice);
     setTotalQuantity(totalQuantity);
+    
   }, [cartItems]);
+
 
   const isLoggedIn = sessionStorage.getItem('token');
 
  
-    const handleDeleteProduct = (productId) => {
-      const isLoggedIn = sessionStorage.getItem('token');
-      const decodedToken = jwtDecode(isLoggedIn);
-      
-            const userId = decodedToken.userId;
-    // Update cart state:
-    setCartItems((prevCartItems) =>
-      prevCartItems.filter((item) => item.productDetails.id !== productId)
-    );
-  
-    // Update cookie (using manual parsing):
+  const handleDeleteProduct = (productId) => {
+    const isLoggedIn = sessionStorage.getItem('token');
+    const decodedToken = jwtDecode(isLoggedIn);
+    const userId = decodedToken.userId;
+
+    setCartItems((prevCartItems) => prevCartItems.filter((item) => item.productDetails.id !== productId));
+
     const cartCookie = Cookies.get(userId);
     if (cartCookie) {
       const parsedCartCookie = JSON.parse(cartCookie);
-      const itemToDelete = parsedCartCookie[productId];
-      if (itemToDelete && itemToDelete.quantity) {
-        delete parsedCartCookie[productId];
-        Cookies.set(userId, JSON.stringify(parsedCartCookie));
-      }
+      delete parsedCartCookie[productId];
+      Cookies.set(userId, JSON.stringify(parsedCartCookie));
     }
+
     if (cartItems.length === 1) {
       setShowModal(true);
     }
-
-
   };
   
   const handleIncrementQuantity = (productId) => {
     const isLoggedIn = sessionStorage.getItem('token');
     const decodedToken = jwtDecode(isLoggedIn);
-    
-          const userId = decodedToken.userId;
+    const userId = decodedToken.userId;
+
     setCartItems((prevCartItems) =>
       prevCartItems.map((item) =>
-        item.productDetails.id === productId
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
+        item.productDetails.id === productId ? { ...item, quantity: item.quantity + 1 } : item
       )
     );
-  
-    // Update cookie:
+
     const cartCookie = Cookies.get(userId) || '{}';
     const parsedCartCookie = JSON.parse(cartCookie);
     parsedCartCookie[productId].quantity += 1;
     Cookies.set(userId, JSON.stringify(parsedCartCookie));
   };
-  
   const handleDecrementQuantity = (productId) => {
     const isLoggedIn = sessionStorage.getItem('token');
     const decodedToken = jwtDecode(isLoggedIn);
-    
-          const userId = decodedToken.userId;
+    const userId = decodedToken.userId;
+  
     setCartItems((prevCartItems) =>
       prevCartItems.map((item) =>
         item.productDetails.id === productId && item.quantity > 1
           ? { ...item, quantity: item.quantity - 1 }
           : item
-
       )
     );
   
     // Update cookie:
     const cartCookie = Cookies.get(userId) || '{}';
     const parsedCartCookie = JSON.parse(cartCookie);
-    parsedCartCookie[productId].quantity -= 1;
-    if (parsedCartCookie[productId].quantity === 0) {
-      delete parsedCartCookie[productId];
-      if (cartItems.length === 1) {
-        setShowModal(true);
-        navigate('/');
+  
+    if (parsedCartCookie[productId] && parsedCartCookie[productId].quantity > 1) {
+      parsedCartCookie[productId].quantity -= 1;
+      Cookies.set(userId, JSON.stringify(parsedCartCookie));
+    } else {
+      // If quantity becomes 1 or less, remove the item from the cookie:
+      const isLoggedIn = sessionStorage.getItem('token');
+      const decodedToken = jwtDecode(isLoggedIn);
+      const userId = decodedToken.userId;
+  
+      setCartItems((prevCartItems) => prevCartItems.filter((item) => item.productDetails.id !== productId));
+  
+      const cartCookie = Cookies.get(userId);
+      if (cartCookie) {
+        const parsedCartCookie = JSON.parse(cartCookie);
+        delete parsedCartCookie[productId];
+        Cookies.set(userId, JSON.stringify(parsedCartCookie));
       }
   
+      if (cartItems.length === 1) {
+        setShowModal(true);
+      }
     }
-    Cookies.set(userId, JSON.stringify(parsedCartCookie));
-    
-  
-
-    
   };
+  
   const handleCloseModal = () => {
     setShowModal(false);
     navigate('/');
 
   };
+
+
+
 
   if(isLoggedIn){
 
@@ -243,7 +245,7 @@ function CheckOut() {
               </Card>
             </Col>
             <Col xs={12} md={5}>
-              <Card className="bg-primary text-white rounded-3">
+              <Card className="bg-dark text-white rounded-3">
                 <CardBody>
                   <CardTitle>
                     <h5>Total Price</h5>
@@ -254,7 +256,9 @@ function CheckOut() {
                       <p>Total Quantity: {totalQuantity}</p>
                       <p>Total Price: ${totalPrice.toFixed(2)}</p>
                     </FormGroup>
-                    <Button variant="light">Proceed to Payment</Button>
+                    <Link to={`/payment`}>
+                    <Button  variant="light">Proceed to Payment</Button>
+                    </Link>
                   </Form>
                 </CardBody>
               </Card>
