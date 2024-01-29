@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import './Registration.css';
 import $ from 'jquery';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 function Registration() {
   const [email, setEmail] = useState('');
@@ -60,12 +61,13 @@ function Registration() {
     const currentDate = new Date();
     const ageDiff = currentDate.getFullYear() - birthDate.getFullYear();
 
-    if (ageDiff < 9 || ageDiff === 0) {
+    if (ageDiff <= 9 || ageDiff === 0|| ageDiff<0) {
       setWarning('Age must be at least 9 years.');
       setAge('');
-      alert(warning)
+      
+      toast.error(warning);
     } else {
-      setWarning('');
+    
       setAge(ageDiff);
     }
 
@@ -87,7 +89,8 @@ function Registration() {
     e.preventDefault();
 
     if (!validateFields()) {
-      alert('Invalid input. Please check your details.');
+     
+      toast.error('Invalid input. Please check your details.');
       return;
     }
 
@@ -104,17 +107,21 @@ function Registration() {
 
       if (response.status === 200) {
         // Registration successful
-        alert('Registration successful!');
+     
+        toast.success('Registration successful!');
       } else if (response.status === 400) {
         // Registration failed due to duplicate email
-        alert('Email already in use. Please choose another email.');
+ 
+        toast.error('Email already in use. Please choose another email.');
       } else {
         // Registration failed for other reasons
-        alert('Registration failed. Please try again later.');
+       
+        toast.error('Registration failed. Please try again later.');
       }
     } catch (error) {
       console.error('Registration error:', error);
-      alert('An error occurred during registration. Please try again later.');
+   
+      toast.error('An error occurred during registration. Please try again later.');
     }
   };
 

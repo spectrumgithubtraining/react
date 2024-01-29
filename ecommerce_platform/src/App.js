@@ -17,6 +17,8 @@ import CheckOut from './components/user/ProductPage/checkOutPage/CheckOut';
 import Payment from './components/user/ProductPage/Payment/Payment';
 import RazorPay from './components/user/ProductPage/Payment/RazorPay';
 import UserProfile from './components/user/userProfile/UserProfile';
+import { ToastContainer } from 'react-toastify'; // Import ToastContainer
+import 'react-toastify/dist/ReactToastify.css'; // Import ToastContainer CSS
 
 const PrivateRoute = ({ element, authenticated }) => {
   return authenticated ? element : <Navigate to="/login" />;
@@ -69,6 +71,7 @@ const App = () => {
 
   return (
     <div className="App">
+     <ToastContainer />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Productpage />} />

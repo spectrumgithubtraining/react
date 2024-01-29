@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { React, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-
+import { toast } from 'react-toastify';
 
 import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap';
 import { GoogleLogin } from '@react-oauth/google';
@@ -53,15 +53,15 @@ const handleLogin = async () => {
         if (userType === 'user' || userType === 'seller') {
           navigate(redirect);
         } else {
-          alert('Invalid user type');
+          toast.error('Invalid user type');
         }
       }
     } else {
-      alert('Invalid response format');
+      toast.error('Invalid Response Format');
     }
   } catch (error) {
     console.error('Error:', error);
-    alert('Error during login');
+    toast.error('Error During Login');
   }
 };
 
@@ -99,17 +99,17 @@ const handleLogin = async () => {
 
           navigate(redirect);
         } else {
-          alert('Invalid user type');
+          toast.error('Invalid user type');
         }
       } else {
-        alert('Invalid response format');
+         toast.error('Invalid Response Format');
       }
     } catch (error) {
       console.error('Error:', error);
       if (error.response) {
         console.error('response', error.response.data);
       }
-      alert('google login error')
+      toast.error('Google Login Error');
     }
   };
 

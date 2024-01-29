@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 router.use(bodyParser.json());
 const {User} = require('../models/user')
+const {Payment} = require('../models/payment')
 const crypto = require('crypto')
 
 async function verifyRecaptcha(recaptchaResponse) {
@@ -55,5 +56,27 @@ console.log(isRecaptchaValid)
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+router.get('/orderHistory/:userId', async (req, res) => {
+  const userId = req.params.userId;
+
+  try {
+    const orderHistory = await Payment.find({ userId });
+    if (orderHistory.length === 0) {
+      // Return 404 if no order history found for the user
+      return res.status(404).json({ message: 'No order history found for the user' });
+    }
+    // Return the order history if found
+    res.json(orderHistory);
+  
+  } catch (error) {
+    console.error('Error fetching order history:', error);
+    // Return 500 for internal server error
+    res.status(500).json({ message: 'Internal server error while fetching order history' });
+  }
+});
+
+
+module.exports = router;
 
 module.exports = router;
