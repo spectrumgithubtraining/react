@@ -25,14 +25,27 @@ const PrivateRoute = ({ element, authenticated }) => {
 };
 
 const App = () => {
-
-  
   const [userType, setUserType] = useState(null);
-
+  const isLoggedIn = sessionStorage.getItem('token');
+ const isloggedIn = ()=>{
+  const isLoggedIn = sessionStorage.getItem('token');
+  
+  if (isLoggedIn) {
+    try {
+      const decodedToken = jwtDecode(isLoggedIn);
+      const userType = decodedToken.userType;
+      setUserType(userType);
+    } catch (error) {
+      console.error('Error decoding token:', error);
+    }
+  } else {
+    setUserType(null); // Reset user type if not logged in
+  }
+ }
   useEffect(() => {
+    isloggedIn()
     const isLoggedIn = sessionStorage.getItem('token');
   
-    // Check if the token exists before attempting to decode
     if (isLoggedIn) {
       try {
         const decodedToken = jwtDecode(isLoggedIn);
@@ -41,13 +54,12 @@ const App = () => {
       } catch (error) {
         console.error('Error decoding token:', error);
       }
+    } else {
+      setUserType(null); // Reset user type if not logged in
     }
-    else{
-      redirectToLogin()
-    }
-  }, []);
+  }, [isLoggedIn]);
 
-  const redirectToLogin = () => <Route path="/login" element={<Login />} />;
+  const redirectToLogin = () => <Navigate to="/login" />;
 
   const userRoutes = (
     <>
@@ -71,21 +83,45 @@ const App = () => {
 
   return (
     <div className="App">
-     <ToastContainer />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Productpage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="registration" element={<Registration />} />
+    <ToastContainer />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Productpage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/registration" element={<Registration />} />
 
-          {userType === 'user' && userRoutes}
-          {userType === 'seller' && sellerRoutes}
+        {userType === 'user' && (
+          <>
+            <Route path="/user/view/:productId" element={<ViewProductPage />} />
+            <Route path="/user/userProfile" element={<UserProfile />} />
+            <Route path="/checkOutPage" element={<CheckOut />} />
+            <Route path="/payment" element={<PrivateRoute element={<Payment />} authenticated={userType === 'user'} />} />
+            <Route path="/razorpay" element={<PrivateRoute element={<RazorPay />} authenticated={userType === 'user'} />} />
+          </>
+        )}
 
-          <Route path="/*" element={redirectToLogin} />
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
+        {userType === 'seller' && (
+          <>
+            <Route path="/sellerdashboard" element={<SellerDashboard />} />
+            <Route path="/addProduct" element={<Add />} />
+            <Route path="/sellerdashboard/edit/:productId" element={<Edit />} />
+            <Route path="/sellerdashboard/view/:productId" element={<View />} />
+            <Route path="/dashboard" element={<SellerSidebar />} />
+          </>
+        )}
+         {userType === null && (
+          <>
+           <Route path="*" element={<Login />} />
+          </>
+        )}
+        
+
+        
+      </Routes>
+    </BrowserRouter>
+  </div>
+);
 };
+
 
 export default App;

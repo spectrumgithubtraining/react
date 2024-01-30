@@ -200,17 +200,34 @@ function Row(props) {
   const downloadInvoice = () => {
     const doc = new jsPDF();
 
+
     // Add company name, username, email, phone number, and date of order
-    doc.text(`Order ID: ${row.orderId}`, 10, 20);
-    doc.text(`Payment ID: ${row.paymentId}`, 10, 30);
-    doc.text(`Signature: ${row.signature}`, 10, 40);
-    doc.text(`First Name: ${row.firstName}`, 10, 60);
-    doc.text(`Last Name: ${row.lastName}`, 10, 70);
-    doc.text(`Address: ${row.address}`, 10, 90);
-    doc.text(`Email: ${row.email}`, 10, 110);
-    doc.text(`Phone Number: ${row.phone}`, 10, 120);
-    doc.text(`Date of Order: ${row.orderDate}`, 10, 130);
-    
+    doc.text(`J$L`,10,10)
+doc.text(`Kozhikode`, 10, 20); // Address
+doc.text(`Order ID: ${row.orderId}`, 10, 30);
+doc.text(`Payment ID: ${row.paymentId}`, 10, 40);
+doc.text(`First Name: ${row.firstName}`, 10, 60);
+doc.text(`Last Name: ${row.lastName}`, 10, 70);
+doc.text(`Email: ${row.email}`, 10, 90);
+doc.text(`Phone Number: ${row.phone}`, 10, 100);
+doc.text(`Date of Order: ${row.orderDate}`, 10, 110);
+doc.text(`Signature: ${row.signature}`, 10, 120); // Signature (includes J$L)
+
+
+// Right-aligned text for date, time, and day
+const indianOptions = { timeZone: 'Asia/Kolkata' };
+const currentDate = new Date();
+const formattedDate = currentDate.toLocaleDateString('en-IN', indianOptions);
+const formattedTime = currentDate.toLocaleTimeString('en-IN', indianOptions);
+const formattedDay = currentDate.toLocaleDateString('en-IN', { weekday: 'long', ...indianOptions });
+
+// Calculate the width of the text to align it to the right side
+const textWidth = doc.getStringUnitWidth(formattedDate) * doc.internal.getFontSize();
+const rightSideX = doc.internal.pageSize.width - 10 - textWidth;
+
+doc.text(`Date: ${formattedDate}`, rightSideX, 20);
+doc.text(`Time: ${formattedTime}`, rightSideX, 30);
+doc.text(`Day: ${formattedDay}`, rightSideX, 40);
     // Draw a line to separate user details from the table
     doc.line(10, 150, 200, 150);
     

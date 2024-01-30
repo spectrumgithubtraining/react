@@ -159,7 +159,7 @@ function CheckOut() {
   
             className="d-flex justify-content-center align-items-center h-100">
   
-            <Col xs={12} md={7}>
+            <Col xs={12} md={8}>
               <Card>
                 <CardBody>
                   <h5>
@@ -174,8 +174,8 @@ function CheckOut() {
                   <table className="table table-borderless"> {/* Use table for table-like layout */}
                     <thead>
                       <tr>
-                        <th>Product</th>
-                        <th>Description</th>
+                        <th colSpan={2}>Product</th>
+                       
                         <th>Quantity</th>
                         <th>Price</th>
                         <th>Action</th>
@@ -192,9 +192,11 @@ function CheckOut() {
                               style={{ width: 65 }}
                             />
                             <br />
-                            {item.productDetails.productName}
+                        
                           </td>
-                          <td>{item.productDetails.description}</td>
+                          <td>
+                         <u> {item.productDetails.productName}</u><br/>
+                            {item.productDetails.description}</td>
                           <td>
                             <Button
                               variant="light"
@@ -244,7 +246,7 @@ function CheckOut() {
                 </CardBody>
               </Card>
             </Col>
-            <Col xs={12} md={5}>
+            <Col xs={12} md={4}>
               <Card className="bg-dark text-white rounded-3">
                 <CardBody>
                   <CardTitle>

@@ -13,6 +13,11 @@ function ViewProductPage() {
   const [productData, setProductData] = useState({});
   const [selectedQuantity, setSelectedQuantity] = useState(1);
 
+  const [totalQuantity, setTotalQuantity] = useState(1);
+  const isLoggedIn = sessionStorage.getItem('token');
+  
+
+
   useEffect(() => {
     fetchProductDetails();
   }, [productId]);
@@ -34,6 +39,14 @@ function ViewProductPage() {
       alert('Please enter a valid quantity (1-20)');
     }
   };
+  const calculateTotalQuantity = (cart) => {
+    let totalQuantity = 0;
+    for (const productId in cart) {
+      totalQuantity += cart[productId].quantity;
+    }
+    return totalQuantity;
+  };
+  
 
   const handleAddToCart = async () => {
     const isLoggedIn = sessionStorage.getItem('token');
@@ -48,11 +61,16 @@ function ViewProductPage() {
         const cartCookie = Cookies.get(userId) || '{}';
         const parsedCartCookie = JSON.parse(cartCookie);
 
+        setTotalQuantity(calculateTotalQuantity(parsedCartCookie))
+
+
         // Check if the product is already in the cart
         if (parsedCartCookie[productId]) {
           // Update existing product quantity
           parsedCartCookie[productId].quantity += selectedQuantity;
-          console.log('Product added to existing cart entry.'); // Logging for debugging
+          console.log('Product added to existing cart entry.');
+          navigate('/checkOutPage', { state: { totalQuantity } });
+          // Logging for debugging
         } else {
           // Add new product to cart cookie
           parsedCartCookie[productId] = {
@@ -61,7 +79,7 @@ function ViewProductPage() {
             quantity: selectedQuantity,
           };
           console.log('New product added to cart.'); // Logging for debugging
-          navigate('/checkOutPage')
+          navigate('/checkOutPage', { state: { totalQuantity } });
         }
 
         // Set the updated cart cookie
@@ -82,7 +100,7 @@ function ViewProductPage() {
   };
   return (
     <div>
-      <Header  />
+      <Header totalQuantity={totalQuantity} />
 
       <section className="py-5">
         <div className="container px-4 px-lg-5 my-5">

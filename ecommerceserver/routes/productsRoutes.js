@@ -54,7 +54,7 @@ router.put('/editProduct/:productId', productValidationRules(), validate, async 
       res.status(500).json({ message: 'Server error', error: error });
     }
   });
-  // Assuming the route for deleting a product is "/dashboard/delete-product/:productId"
+ 
   router.delete('/delete-product/:productId', async (req, res) => {
     const productId = req.params.productId;
   

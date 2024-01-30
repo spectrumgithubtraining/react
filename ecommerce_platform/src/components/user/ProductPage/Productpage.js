@@ -7,6 +7,7 @@ import Footer from '../../Footer';
 
 
 const ProductPage = () => {
+
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchKey, setSearchKey] = useState('');

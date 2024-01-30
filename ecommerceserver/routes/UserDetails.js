@@ -77,6 +77,50 @@ router.get('/orderHistory/:userId', async (req, res) => {
 });
 
 
-module.exports = router;
+router.get('/userDetails/:userId', async (req, res) => {
+  const userId = req.params.userId;
+
+  try {
+    const userDetails = await User.find({_id:userId });
+    if (userDetails.length === 0) {
+      // Return 404 if no order history found for the user
+      return res.status(404).json({ message: 'No User Found' });
+    }
+    // Return the order history if found
+    res.json(userDetails);
+  
+  } catch (error) {
+    console.error('Error fetching order history:', error);
+    // Return 500 for internal server error
+    res.status(500).json({ message: 'Internal server error while fetching order history' });
+  }
+});
+
+router.put('/userDetails/:userId', async (req, res) => {
+  const userId = req.params.userId; // Use 'userId' instead of 'productId'
+  const updatedUserData = req.body;
+
+  try {
+    // Find the user by ID and update the user's fields individually
+    const user = await User.findOneAndUpdate(
+      { _id: userId },
+      { $set: updatedUserData }, // Update user fields
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error', error: error });
+  }
+});
+
+
+
+
 
 module.exports = router;

@@ -51,6 +51,7 @@ const handleLogin = async () => {
       } else {
         const { userType, redirect } = response.data;
         if (userType === 'user' || userType === 'seller') {
+          window.location.reload()
           navigate(redirect);
         } else {
           toast.error('Invalid user type');

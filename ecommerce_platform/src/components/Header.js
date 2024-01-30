@@ -4,12 +4,11 @@ import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import { Link  } from 'react-router-dom';
 
-function Header({ onSearch }) {
+function Header({ onSearch ,totalQuantity}) {
   const [allProducts, setAllProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [cartQuantity, setCartQuantity] = useState(0);
-
-
+  const [totalquantity, settotalQuantity] = useState(totalQuantity);
   const fetchData = async () => {
     try {
       const result = await axios.get('http://localhost:5000/api/admin/Product/viewProduct');
@@ -35,7 +34,7 @@ function Header({ onSearch }) {
     updateCartQuantity()
    
 
-  },[])
+  },[totalquantity])
   const updateCartQuantity = () => {
     const isLoggedIn = sessionStorage.getItem('token');
   
