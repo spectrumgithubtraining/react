@@ -1,175 +1,4 @@
-// import React, { useState, useEffect } from 'react';
-// import { jwtDecode } from 'jwt-decode';
-// import axios from 'axios';
-// import Box from '@mui/material/Box';
-// import Collapse from '@mui/material/Collapse';
-// import IconButton from '@mui/material/IconButton';
-// import Table from '@mui/material/Table';
-// import TableBody from '@mui/material/TableBody';
-// import TableCell from '@mui/material/TableCell';
-// import TableContainer from '@mui/material/TableContainer';
-// import TableHead from '@mui/material/TableHead';
-// import TableRow from '@mui/material/TableRow';
-// import Typography from '@mui/material/Typography';
-// import Paper from '@mui/material/Paper';
-// import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-// import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-// import CircularProgress from '@mui/material/CircularProgress';
-// import jsPDF from 'jspdf';
-// import Button from '@mui/material/Button';
 
-// function Row(props) {
-//   const { row } = props;
-//   const [open, setOpen] = React.useState(false);
-//   const downloadInvoice = () => {
-
-//     const doc = new jsPDF();
-    
-//     // Add content to the PDF
-//     doc.text(`Invoice for Order ID: ${row.paymentId}`, 10, 10);
-//     doc.text(`Product ID: ${row.products[0].productId}`, 10, 20);
-//     doc.text(`Quantity: ${row.products[0].quantity}`, 10, 30);
-//     doc.text(`Total Price: ${row.products[0].totalPrice}`, 10, 40);
-
-//     // Save the PDF
-//     doc.save(`invoice_${row.paymentId}.pdf`);
-//   };
-
-//   return (
-//     <React.Fragment>
-//     <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-//       <TableCell>
-//         <IconButton
-//           aria-label="expand row"
-//           size="small"
-//           onClick={() => setOpen(!open)}
-//         >
-//           {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-//         </IconButton>
-//       </TableCell>
-//       <TableCell component="th" scope="row">
-//         {row.paymentId}
-//       </TableCell>
-     
-//       <TableCell align="right">{row.totalPrice}</TableCell>
-//       <TableCell align="right">{row.orderDate}</TableCell> {/* Add order date */}
-    
-//     </TableRow>
-//     <TableRow>
-//       <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
-//         <Collapse in={open} timeout="auto" unmountOnExit>
-//           <Box sx={{ margin: 1 }}>
-//             <Typography variant="h6" gutterBottom component="div">
-//               Order Details
-//             </Typography>
-//             <Table size="small" aria-label="product details">
-//                 <TableHead>
-//                   <TableRow>
-//                     <TableCell>Product ID</TableCell>
-//                     <TableCell>Quantity</TableCell>
-//                     <TableCell>Total Price</TableCell>
-//                     <TableCell>Address</TableCell>
-//                     <TableCell>Phone Number</TableCell>
-//                     <TableCell> Email</TableCell>
-//                   </TableRow>
-//                 </TableHead>
-//                 <TableBody>
-//                   {row.products.map((product) => (
-//                     <TableRow key={product._id}>
-//                       <TableCell>{product.productId}</TableCell>
-//                       <TableCell>{product.quantity}</TableCell>
-//                       <TableCell>{product.totalPrice}</TableCell>
-//                       <TableCell>{row.address}</TableCell>
-//                       <TableCell>{row.phone}</TableCell>
-//                       <TableCell>{row.email}</TableCell>
-//                     </TableRow>
-                    
-//                   ))}
-//                 </TableBody>
-//               </Table>
-//           </Box>
-//         </Collapse>
-//       </TableCell>
-//     </TableRow>
-    
-//   </React.Fragment>
-//   );
-// }
-
-// function ViewOrderHistory() {
-//   const [products, setProducts] = useState([]);
-//   const [userId, setUserId] = useState('');
-//   const [loading, setLoading] = useState(true);
-//   const isLoggedIn = sessionStorage.getItem('token');
-
-//   // Check if the token exists before attempting to decode
-//   useEffect(() => {
-//     if (isLoggedIn) {
-//       try {
-//         const decodedToken = jwtDecode(isLoggedIn);
-//         const userId = decodedToken.userId;
-//         setUserId(userId);
-//       } catch (error) {
-//         console.error('Error decoding token:', error);
-//       }
-//     }
-//   }, [isLoggedIn]);
-
-//   useEffect(() => {
-//     const fetchProducts = async () => {
-//       try {
-//         const response = await axios.get(`http://localhost:5000/api/user/details/orderHistory/${userId}`);
-//       console.log(response.data)
-//         setProducts(response.data);
-//         console.log(products)
-//         setLoading(false);
-//       } catch (error) {
-//         console.error('Error fetching products:', error);
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchProducts();
-//   }, [userId]);
-
-//   if (loading) {
-//     return <CircularProgress />;
-//   }
-
-//   return (
-//     <TableContainer component={Paper}>
-//       <Table aria-label="collapsible table">
-//         <TableHead>
-//           <TableRow>
-//             <TableCell />
-//             <TableCell>Payment ID</TableCell>
-//             <TableCell align="right">Total Price</TableCell>
-//             <TableCell align="right">Date purchased</TableCell>
-//             <TableCell>
-//           {/* Button to download PDF invoice */}
-//           <Button variant="contained" onClick={downloadInvoice}>
-//             Download Invoice
-//           </Button>
-//         </TableCell>
-//           </TableRow>
-//         </TableHead>
-//         <TableBody>
-//           {products.length === 0 ? (
-//             <TableRow>
-//               <TableCell colSpan={4} align="center">
-//                 No order history found for the user
-//               </TableCell>
-//             </TableRow>
-//           ) : (
-//             products.map((product) => <Row key={product.productId} row={product} />)
-//           )}
-//         </TableBody>
-//       </Table>
-//     </TableContainer>
-//   );
-// }
-
-// export default ViewOrderHistory;
 import React, { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
@@ -206,12 +35,11 @@ function Row(props) {
 doc.text(`Kozhikode`, 10, 20); // Address
 doc.text(`Order ID: ${row.orderId}`, 10, 30);
 doc.text(`Payment ID: ${row.paymentId}`, 10, 40);
-doc.text(`First Name: ${row.firstName}`, 10, 60);
-doc.text(`Last Name: ${row.lastName}`, 10, 70);
+doc.text(`First Name: ${row.firstName}`, 10, 70);
+doc.text(`Last Name: ${row.lastName}`, 10, 80);
 doc.text(`Email: ${row.email}`, 10, 90);
 doc.text(`Phone Number: ${row.phone}`, 10, 100);
 doc.text(`Date of Order: ${row.orderDate}`, 10, 110);
-doc.text(`Signature: ${row.signature}`, 10, 120); // Signature (includes J$L)
 
 
 // Right-aligned text for date, time, and day
@@ -232,15 +60,15 @@ doc.text(`Day: ${formattedDay}`, rightSideX, 40);
     doc.line(10, 150, 200, 150);
     
     // Add a table
-    const columns = ["Product ID", "Quantity", "Total Price"];
-    const data = row.products.map(product => [product.productId, product.quantity, product.totalPrice]);
+    const columns = ["Product ID","Product Name" ,"Quantity", "Total Price"];
+    const data = row.products.map(product => [product.productId,product.productName, product.quantity, product.totalPrice]);
     
     // Calculate total quantity and total price
     const totalQuantity = row.products.reduce((total, product) => total + product.quantity, 0);
     const totalPrice = row.products.reduce((total, product) => total + product.totalPrice, 0);
     
     // Append the row for total quantity and total price to the data array
-    data.push(["Total", totalQuantity, totalPrice]);
+    data.push(["","Total", totalQuantity, totalPrice]);
     
     // Add the table below the line
     doc.autoTable({
@@ -255,7 +83,9 @@ doc.text(`Day: ${formattedDay}`, rightSideX, 40);
 
 
   return (
+
     <React.Fragment>
+     
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
         <TableCell>
           <IconButton
@@ -358,7 +188,9 @@ function ViewOrderHistory() {
  
 
   return (
+
     <TableContainer component={Paper}>
+    
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>

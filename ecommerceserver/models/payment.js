@@ -8,6 +8,7 @@ const Payment = mongoose.model('Payment', {
     products: [
         {
             productId: String,
+            productName: String,
             quantity: Number,
             totalPrice: Number
         },

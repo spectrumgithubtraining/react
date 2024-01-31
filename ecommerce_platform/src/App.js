@@ -19,6 +19,7 @@ import RazorPay from './components/user/ProductPage/Payment/RazorPay';
 import UserProfile from './components/user/userProfile/UserProfile';
 import { ToastContainer } from 'react-toastify'; // Import ToastContainer
 import 'react-toastify/dist/ReactToastify.css'; // Import ToastContainer CSS
+import Wishlist from './components/user/ProductPage/wishList/Wishlist';
 
 const PrivateRoute = ({ element, authenticated }) => {
   return authenticated ? element : <Navigate to="/login" />;
@@ -61,25 +62,25 @@ const App = () => {
 
   const redirectToLogin = () => <Navigate to="/login" />;
 
-  const userRoutes = (
-    <>
-      <Route path="/user/view/:productId" element={<ViewProductPage />} />
-      <Route path="/user/userProfile" element={<UserProfile />} />
-      <Route path="/checkOutPage" element={<CheckOut />} />
-      <Route path="/payment" element={<PrivateRoute element={<Payment />} authenticated={userType === 'user'} />} />
-      <Route path="/razorpay" element={<PrivateRoute element={<RazorPay />} authenticated={userType === 'user'} />} />
-    </>
-  );
+  // const userRoutes = (
+  //   <>
+  //     <Route path="/user/view/:productId" element={<ViewProductPage />} />
+  //     <Route path="/user/userProfile" element={<UserProfile />} />
+  //     <Route path="/checkOutPage" element={<CheckOut />} />
+  //     <Route path="/payment" element={<PrivateRoute element={<Payment />} authenticated={userType === 'user'} />} />
+  //     <Route path="/razorpay" element={<PrivateRoute element={<RazorPay />} authenticated={userType === 'user'} />} />
+  //   </>
+  // );
 
-  const sellerRoutes = (
-    <>
-      <Route path="/sellerdashboard" element={<SellerDashboard />} />
-      <Route path="/addProduct" element={<Add />} />
-      <Route path="/sellerdashboard/edit/:productId" element={<Edit />} />
-      <Route path="/sellerdashboard/view/:productId" element={<View />} />
-      <Route path="/dashboard" element={<SellerSidebar />} />
-    </>
-  );
+  // const sellerRoutes = (
+  //   <>
+  //     <Route path="/sellerdashboard" element={<SellerDashboard />} />
+  //     <Route path="/addProduct" element={<Add />} />
+  //     <Route path="/sellerdashboard/edit/:productId" element={<Edit />} />
+  //     <Route path="/sellerdashboard/view/:productId" element={<View />} />
+  //     <Route path="/dashboard" element={<SellerSidebar />} />
+  //   </>
+  // );
 
   return (
     <div className="App">
@@ -89,6 +90,7 @@ const App = () => {
         <Route path="/" element={<Productpage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
+        <Route path="/wishlist" element={<Wishlist />} />
 
         {userType === 'user' && (
           <>
