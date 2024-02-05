@@ -16,6 +16,7 @@ const productsRoutes = require('./routes/productsRoutes')
 const userDetails = require('./routes/UserDetails')
 const cartRoutes = require('./routes/cartRouter')
 const razorpayRouter = require('./routes/razorpayRouter');
+const wishListRouter = require('./routes/wishListRouter')
 
 const app = express();
 app.use(express.json());
@@ -41,6 +42,7 @@ app.use('/api/admin/Product',productsRoutes)
 app.use('/api/admin/Cart',cartRoutes)
 app.use('/razorpay', razorpayRouter);
 app.use('/api/user/details',userDetails)
+app.use('/api/user/wishlist',wishListRouter)
 
 
 

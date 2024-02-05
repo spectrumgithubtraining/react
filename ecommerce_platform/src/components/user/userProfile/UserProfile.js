@@ -6,7 +6,7 @@ import ViewOrderHistory from './ViewOrderHistory/ViewOrderHistory';
 import ChangePassword from './ChangeUserPassword/ChangePassword';
 import CircularProgress from '@mui/material/CircularProgress';
 import { jwtDecode } from 'jwt-decode';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const UserProfile = () => {
@@ -244,6 +244,13 @@ useEffect(() => {
                 >
                   <h6 className="mb-0"><i className="feather feather-globe mr-2 icon-inline"></i>User Profile</h6>
                 </li>
+                <Link to="/wishList" style={{textDecoration:'none'}}>
+                <li
+                  className="list-group-item d-flex justify-content-between align-items-center flex-wrap"
+             
+                >
+                  <h6 className="mb-0"><i className="feather feather-globe mr-2 icon-inline"></i>WishList</h6>
+                </li></Link>
                 <li
                   className="list-group-item d-flex justify-content-between align-items-center flex-wrap"
                   onClick={()=>handleLogout()}
