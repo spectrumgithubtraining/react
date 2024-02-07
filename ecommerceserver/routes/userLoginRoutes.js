@@ -62,7 +62,7 @@ router.post('/login', async (req, res) => {
 
     if (user.userType === 'user') {
       // Handle regular user login
-      res.json({ userType: 'user', message: 'Regular user logged in', redirect: '/', token, genratedcookie:serializedCookie });
+      res.json({ userType: 'user', message: 'Regular user logged in', redirect: '/productPage', token, genratedcookie:serializedCookie });
     } else if (user.userType === 'seller') {
       // Handle seller login
       res.json({ userType: 'seller', message: 'Seller logged in', redirect: '/sellerdashboard', token });

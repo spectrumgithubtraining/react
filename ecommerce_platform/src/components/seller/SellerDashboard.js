@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 import './SellerDashboard.css';
+import { WindowSharp } from '@mui/icons-material';
 
 
 function SellerDashboard() {
+ const  navigate = useNavigate()
   const [allProducts, setAllProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -29,6 +31,13 @@ function SellerDashboard() {
     }
   };
 
+  const handleLogout= () =>{
+    sessionStorage.removeItem('token')
+    navigate('/login')
+    window.location.reload()
+  }
+ 
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -38,7 +47,7 @@ function SellerDashboard() {
     product && product.productName && product.productName.toLowerCase().includes((searchTerm || '').toLowerCase())
 
   );
-  
+
  
 
   return (
@@ -53,6 +62,9 @@ function SellerDashboard() {
               Add Products
             </button>
           </Link>
+          <button className="btn btn-outline-warning me-5" onClick={()=>handleLogout()}>
+              Logout
+            </button>
         </div><h1>Products</h1>
 
         <div className="container mt-4">

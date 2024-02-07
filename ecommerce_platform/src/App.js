@@ -20,6 +20,7 @@ import UserProfile from './components/user/userProfile/UserProfile';
 import { ToastContainer } from 'react-toastify'; // Import ToastContainer
 import 'react-toastify/dist/ReactToastify.css'; // Import ToastContainer CSS
 import Wishlist from './components/user/ProductPage/wishList/Wishlist';
+import LandingPage from './components/landingpage/LandingPage';
 
 const PrivateRoute = ({ element, authenticated }) => {
   return authenticated ? element : <Navigate to="/login" />;
@@ -87,10 +88,11 @@ const App = () => {
     <ToastContainer />
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Productpage />} />
+        <Route path="/productPage" element={<Productpage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
         <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/" element={<LandingPage />} />
 
         {userType === 'user' && (
           <>
@@ -103,6 +105,7 @@ const App = () => {
         )}
 
         {userType === 'seller' && (
+          
           <>
             <Route path="/sellerdashboard" element={<SellerDashboard />} />
             <Route path="/addProduct" element={<Add />} />
