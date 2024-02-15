@@ -13,7 +13,6 @@ function LandingPage() {
         <Home></Home>
         <About></About>
         <Work></Work>
-   
         <Contact></Contact>
         <Footer></Footer>
     </div>

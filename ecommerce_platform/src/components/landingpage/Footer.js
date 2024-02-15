@@ -7,7 +7,7 @@ import { FaFacebookF } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <div className="footer-wrapper">
+    <div className="footer-wrapper mt-5">
       <div className="footer-section-one">
         <div className="footer-logo-container">
         <img style={{width:"150px"}} src="https://i.postimg.cc/FK4K1dSJ/J-L-logos-black.png" alt="" />

@@ -5,6 +5,7 @@ import Header from '../../../Header';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
+import "../ViewProductPage/ViewProductPage.css"
 
 function ViewProductPage() {
   const { productId } = useParams();
@@ -133,7 +134,7 @@ function ViewProductPage() {
                   />
                 </div>
                 <button
-                  className="btn btn-outline-dark flex-shrink-0 me-3 "
+                  className="custom-button"
                   type="button"
                   onClick={handleAddToCart}
                 >

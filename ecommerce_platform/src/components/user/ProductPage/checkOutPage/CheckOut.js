@@ -150,7 +150,7 @@ function CheckOut() {
   
         className="h-100 h-custom">
         <Container
-          className="py-5 h-100">
+          className="py-5 h-100 " style={{marginLeft:"10px"}}>
   
   
   
@@ -159,7 +159,7 @@ function CheckOut() {
   
             className="d-flex justify-content-center align-items-center h-100">
   
-            <Col xs={12} md={8}>
+            <Col xs={12} md={9}>
               <Card>
                 <CardBody>
                   <h5>
@@ -246,8 +246,8 @@ function CheckOut() {
                 </CardBody>
               </Card>
             </Col>
-            <Col xs={12} md={4}>
-              <Card className="bg-dark text-white rounded-3">
+            <Col xs={12} md={3}>
+              <Card className="bg-dark text-white rounded-3" style={{width:"300px"}}>
                 <CardBody>
                   <CardTitle>
                     <h5>Total Price</h5>

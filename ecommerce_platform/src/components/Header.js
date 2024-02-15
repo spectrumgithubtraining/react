@@ -3,6 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import { Link  } from 'react-router-dom';
+import './Header.css'
 
 function Header({ onSearch ,totalQuantity}) {
   const [allProducts, setAllProducts] = useState([]);
@@ -79,13 +80,13 @@ function Header({ onSearch ,totalQuantity}) {
             <a className="nav-link active"  style={{color:'white'}} href="/">Home</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link"  style={{color:'white'}} href="#">About us</a>
+            <a className="nav-link me-1"  style={{color:'white'}} href="#">About</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link"  style={{color:'white'}} href="#">Contact us</a>
+            <a className="nav-link me-1"  style={{color:'white'}} href="#">Contact </a>
           </li>
           <li className="nav-item">
-            <a className="nav-link"  style={{color:'white'}} href="/user/userProfile">User</a>
+            <a className="nav-link me-1"  style={{color:'white'}} href="/user/userProfile">User</a>
           </li>
           <li className="nav-item">
             <Link to={'/checkOutPage'}>

@@ -136,7 +136,7 @@ useEffect(() => {
       }
 
       return (
-        <Card className="mt-5">
+        <Card className="mt-5" style={{marginLeft:"120px"}}>
         <Card.Body>
           {loading ? (
             <CircularProgress /> // Display a loading indicator while data is being fetched

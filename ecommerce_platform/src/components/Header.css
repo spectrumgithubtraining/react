@@ -1,16 +1,114 @@
-nav.navbar.navbar-expand {
-    background-color: rgb(255, 255, 255);
-}
-a.navbar-brand {
-    font-size: 42px;
-    margin-left: 20px;
+/* Navbar styles */
+.navbar {
+    background-color: #3d5027;
+    color: white;
+    padding: 1rem 0;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar-brand {
+    font-size: 1.5rem;
+    text-decoration: none;
+    color: white;
+  }
+  
+  .navbar-nav {
+    list-style: none;
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-item {
+    margin-right: 1rem;
+  }
+  
+  .nav-link {
+    text-decoration: none;
+    color: white;
+  }
+  
+  .nav-link:hover {
+    color: #d8d8d8;
+  }
+  
+  .badge {
+    background-color: #f8f9fa;
     color: black;
-
-}
-a.nav-link{
+    border-radius: 50%;
+    padding: 0.25rem 0.5rem;
+    margin-left: 0.5rem;
+  }
+  
+  /* Navbar toggler styles */
+  .navbar-toggler {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: none;
+  }
+  
+  .navbar-toggler span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Navbar menu styles */
+  .navbar-menu {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-search {
+    display: flex;
+    margin-left: auto;
+  }
+  
+  .navbar-search input[type="text"] {
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-right: 0.5rem;
+  }
+  
+  .navbar-search button {
+    padding: 0.5rem 1rem;
+    background-color: #f8f9fa;
     color: black;
-}
-button.btn.btn-outline-dark {
-    
-    margin-left: 400px;
-}
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Media query for responsiveness */
+  @media (max-width: 768px) {
+    .navbar-menu {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 4rem;
+      left: 0;
+      width: 100%;
+      background-color: #3d5027;
+      padding: 1rem;
+      z-index: 999;
+    }
+  
+    .navbar-menu.active {
+      display: flex;
+    }
+  
+    .navbar-toggler {
+      display: block;
+    }
+  }
+  

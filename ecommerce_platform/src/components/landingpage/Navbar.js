@@ -19,6 +19,7 @@ import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import { Link } from "react-router-dom";
 
 
+
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const menuOptions = [
@@ -45,11 +46,15 @@ const Navbar = () => {
   ];
   return (
     <nav>
-      <div className="nav-logo-container">
+      <div className="nav-logo-container-landingpage">
         <img style={{width:"150px"}} src="https://i.postimg.cc/FK4K1dSJ/J-L-logos-black.png" alt="" />
       </div>
       <div className="navbar-links-container">
-      <Link style={{textDecoration:"none"}} to={'/productPage'}>Home</Link>
+      <Link  to="about-section"
+            smooth={true}
+            duration={500} 
+            style={{textDecoration:"none"}} 
+           >Home</Link>
 
         <Link style={{textDecoration:"none"}} to={'/productPage'}>About</Link>
 
@@ -57,7 +62,10 @@ const Navbar = () => {
         <Link style={{textDecoration:"none"}} to={'/checkOutPage'}>
           <BsCart2 className="navbar-cart-icon" />
         </Link>
-        <button className="primary-button">Bookings Now</button>
+        <Link  style={{textDecoration:"none"}} to={'/login'}>
+        <button className="primary-button">Login/Signup</button>
+        </Link>
+       
       </div>
       <div className="navbar-menu-container">
         <HiOutlineBars3 onClick={() => setOpenMenu(true)} />

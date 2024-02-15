@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from '../../Header';
+
 import { Link, useNavigate } from 'react-router-dom';
 import Carousel from 'react-bootstrap/Carousel';
 import Footer from '../../Footer';
 import { jwtDecode } from 'jwt-decode';
 import { toast } from 'react-toastify';
+import "../ProductPage/Productpage.css"
 
 
 const ProductPage = () => {
@@ -148,7 +150,9 @@ const ProductPage = () => {
       </Carousel.Item>
     </Carousel>
   
-        <div className="row text-center">
+   
+      </div>
+      <div className="row text-center">
           <div className="p-2 col-3">
             <button onClick={() => handleFilter('')} type="button" className="btn btn-light">
               <u>View all</u>
@@ -170,7 +174,6 @@ const ProductPage = () => {
             </button>
           </div>
         </div>
-      </div>
 
       <section className="py-5">
         <div className="container px-4 px-lg-5 mt-5">
@@ -188,11 +191,12 @@ const ProductPage = () => {
                   <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
                     <div className="text-center">
       
-                   <Link to={`/user/view/${product.id}`}>
-                   <button className='btn btn-outline-dark mt-auto'>
-                     View
-                   </button>
-                 </Link>
+                    <Link to={`/user/view/${product.id}`}>
+  <button className="custom-button">
+    View
+  </button>
+</Link>
+
                  <span onClick={() => handleToggleWishList(product.id)}>
             {wishList[product.id] ? (
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="26" viewBox="0 0 512 512"  className="bi bi-heart mx-4">
